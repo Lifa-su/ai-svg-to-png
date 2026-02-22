@@ -294,6 +294,71 @@ function download() {
   a.click();
 }
 </script>
+<!-- Pro Features Section -->
+<style>
+.pro-section{max-width:1100px;margin:0 auto 20px;padding:0 20px}
+.pro-blur-wrap{position:relative;cursor:pointer;border-radius:12px;overflow:hidden;transition:transform .2s}
+.pro-blur-wrap:hover{transform:translateY(-2px)}
+.pro-blur-content{filter:blur(5px);pointer-events:none;user-select:none;opacity:.6;padding:24px;background:#16213e;border-radius:12px;border:1px solid #1a3a5c}
+.pro-blur-content .mock-title{font-size:.95rem;color:#00d2ff;margin-bottom:12px;font-weight:600}
+.pro-blur-content .mock-row{display:flex;gap:10px;margin-bottom:10px}
+.pro-blur-content .mock-input{flex:1;height:38px;background:#0f3460;border:1px solid #1a3a5c;border-radius:8px}
+.pro-blur-content .mock-btn{width:140px;height:38px;background:linear-gradient(135deg,#00d2ff,#0f3460);border-radius:8px}
+.pro-blur-content .mock-upload{width:100%;height:80px;border:2px dashed #1a3a5c;border-radius:8px;margin:10px 0;display:flex;align-items:center;justify-content:center;color:#1a3a5c;font-size:1.5rem}
+.pro-blur-content .mock-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.pro-blur-content .mock-item{background:#0f3460;border:1px solid #1a3a5c;border-radius:6px;padding:12px;text-align:center;color:#555;font-size:.8rem}
+.pro-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.45);border-radius:12px;z-index:2}
+.pro-lock{font-size:2.5rem;margin-bottom:8px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.pro-label{font-size:1.15rem;font-weight:700;color:#fff;letter-spacing:1px}
+.pro-sublabel{font-size:.85rem;color:rgba(255,255,255,.65);margin-top:4px}
+.pro-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.pro-modal-overlay.show{display:flex}
+.pro-modal-box{background:#16213e;border-radius:16px;padding:32px;max-width:420px;width:90%;text-align:center;border:1px solid #00d2ff;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:proFadeIn .3s}
+@keyframes proFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+.pro-modal-box h3{font-size:1.4rem;margin-bottom:4px;color:#fff}
+.pro-modal-box .pro-price{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,#00d2ff,#0f3460);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:12px 0}
+.pro-modal-box ul{text-align:left;list-style:none;margin:16px 0;padding:0}
+.pro-modal-box ul li{padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.9rem;color:#ccc}
+.pro-modal-box ul li::before{content:'✅ ';margin-right:6px}
+.pro-modal-box .pro-upgrade-btn{display:block;width:100%;padding:14px;background:linear-gradient(135deg,#00d2ff,#0f3460);color:#fff;font-size:1.05rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;text-decoration:none;margin-top:16px;transition:opacity .2s;text-align:center}
+.pro-modal-box .pro-upgrade-btn:hover{opacity:.88}
+.pro-modal-box .pro-later-btn{display:block;width:100%;padding:12px;background:transparent;color:#888;font-size:.9rem;border:none;cursor:pointer;margin-top:8px;transition:color .2s}
+.pro-modal-box .pro-later-btn:hover{color:#fff}
+</style>
+<div class="pro-section">
+<div class="pro-blur-wrap" onclick="document.getElementById('proModal').classList.add('show')">
+<div class="pro-blur-content">
+<div class="mock-title">📦 Batch SVG Conversion</div>
+<div class="mock-upload">📁 Drop multiple SVG files</div>
+<div class="mock-grid"><div class="mock-item">file1.svg → PNG</div><div class="mock-item">file2.svg → PNG</div><div class="mock-item">file3.svg → PNG</div></div>
+<div class="mock-title">🔧 Custom DPI Settings</div>
+<div class="mock-row"><div class="mock-input"></div><div class="mock-input" style="flex:.5"></div><div class="mock-btn" style="width:100px"></div></div>
+<div class="mock-title">⚡ SVG Optimizer</div>
+<div class="mock-row"><div class="mock-btn" style="background:#28a745"></div><div class="mock-btn" style="background:rgba(255,255,255,.08)"></div></div>
+</div>
+<div class="pro-overlay">
+<div class="pro-lock">🔒</div>
+<div class="pro-label">Pro Features</div>
+<div class="pro-sublabel">Click to unlock</div>
+</div>
+</div>
+</div>
+<div class="pro-modal-overlay" id="proModal" onclick="if(event.target===this)this.classList.remove('show')">
+<div class="pro-modal-box">
+<h3>🎨 SVG to PNG Pro</h3>
+<div class="pro-price">$9</div>
+<p style="color:#aab;font-size:.9rem;margin-bottom:8px">One-time payment · Lifetime access</p>
+<ul>
+<li>Batch SVG Conversion (unlimited files)</li>
+<li>Custom DPI / Resolution Control</li>
+<li>Built-in SVG Optimizer (SVGO)</li>
+<li>ZIP Download for Batch</li>
+<li>Priority Support</li>
+</ul>
+<a class="pro-upgrade-btn" href="https://feifeicch.gumroad.com/l/ai-svg-to-png-pro" target="_blank" rel="noopener">Upgrade to Pro — $9</a>
+<button class="pro-later-btn" onclick="event.stopPropagation();document.getElementById('proModal').classList.remove('show')">Maybe later</button>
+</div>
+</div>
 <script src="https://alwingulla.com/88/tag.min.js" data-zone="130747" async data-cfasync="false"></script>
 </body>
 </html>
