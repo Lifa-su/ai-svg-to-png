@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI SVG to PNG Converter - Free Online Tool</title>
+<meta name="description" content="Convert SVG files to PNG online for free. Drag & drop, paste code, batch convert with custom sizes and backgrounds.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f13;--surface:#1a1a24;--surface2:#24243a;--border:#2e2e48;--text:#e4e4ef;--text2:#9494b8;--accent:#6c5ce7;--accent2:#a29bfe;--danger:#ff6b6b;--success:#51cf66;--radius:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+a{color:var(--accent2)}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+header{text-align:center;padding:40px 0 30px}
+header h1{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:var(--text2);margin-top:8px;font-size:0.95rem}
+.drop-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:50px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--surface);position:relative}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);background:var(--surface2)}
+.drop-zone svg{width:48px;height:48px;fill:var(--text2);margin-bottom:12px}
+.drop-zone h3{font-size:1.1rem;margin-bottom:6px}
+.drop-zone span{color:var(--text2);font-size:0.85rem}
+.drop-zone input[type=file]{display:none}
+.tabs{display:flex;gap:0;margin-top:24px;border-bottom:2px solid var(--border)}
+.tab{padding:10px 24px;cursor:pointer;color:var(--text2);font-size:0.9rem;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.tab-content{display:none;padding-top:16px}
+.tab-content.active{display:block}
+textarea{width:100%;min-height:180px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px;color:var(--text);font-family:'SF Mono',Monaco,Consolas,monospace;font-size:0.85rem;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.controls{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;padding:20px;background:var(--surface);border-radius:var(--radius);align-items:end}
+.control-group{display:flex;flex-direction:column;gap:6px}
+.control-group label{font-size:0.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+select,input[type=color],input[type=text]{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:0.9rem;font-family:inherit}
+select:focus,input:focus{outline:none;border-color:var(--accent)}
+input[type=color]{width:44px;height:38px;padding:2px;cursor:pointer}
+.bg-options{display:flex;gap:8px;align-items:center}
+.bg-btn{width:32px;height:32px;border-radius:8px;border:2px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
+.bg-btn.active{border-color:var(--accent)}
+.bg-btn.transparent{background:repeating-conic-gradient(#808080 0% 25%,#fff 0% 50%) 50%/12px 12px}
+.bg-btn.white{background:#fff}
+.btn{padding:10px 24px;border:none;border-radius:8px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent2)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
+.btn-danger:hover{background:var(--danger);color:#fff}
+.btn-success{background:var(--success);color:#111}
+.btn-success:hover{opacity:0.9}
+.actions{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap}
+.preview-area{margin-top:24px}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin-top:16px}
+.preview-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all .2s}
+.preview-card:hover{border-color:var(--accent)}
+.preview-canvas-wrap{padding:16px;display:flex;align-items:center;justify-content:center;min-height:180px;background:repeating-conic-gradient(var(--surface2) 0% 25%,var(--surface) 0% 50%) 50%/20px 20px}
+.preview-card canvas{max-width:100%;max-height:200px;border-radius:4px}
+.preview-info{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.preview-info .name{font-size:0.85rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60%}
+.preview-info .size{font-size:0.75rem;color:var(--text2)}
+.preview-actions{display:flex;gap:6px}
+.preview-actions button{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:0.8rem;transition:all .2s}
+.preview-actions button:hover{border-color:var(--accent);color:var(--accent2)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text2)}
+.empty-state svg{width:64px;height:64px;fill:var(--border);margin-bottom:16px}
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;font-size:0.9rem;z-index:999;animation:slideIn .3s ease;color:#fff}
+.toast.success{background:var(--success);color:#111}
+.toast.error{background:var(--danger)}
+@keyframes slideIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.7rem;background:var(--surface2);color:var(--text2);margin-left:8px}
+footer{text-align:center;padding:40px 0 20px;color:var(--text2);font-size:0.8rem}
+@media(max-width:640px){
+  header h1{font-size:1.5rem}
+  .controls{flex-direction:column}
+  .preview-grid{grid-template-columns:1fr}
+  .container{padding:12px}
+  .drop-zone{padding:30px 16px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎨 SVG to PNG Converter</h1>
+    <p>Drop SVG files or paste code — convert to high-quality PNG instantly</p>
+  </header>
+
+  <div class="drop-zone" id="dropZone">
+    <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+    <h3>Drop SVG files here</h3>
+    <span>or click to browse • supports multiple files</span>
+    <input type="file" id="fileInput" accept=".svg,image/svg+xml" multiple>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="upload">Upload</button>
+    <button class="tab" data-tab="paste">Paste SVG Code</button>
+  </div>
+
+  <div class="tab-content active" id="tab-upload">
+    <p style="color:var(--text2);font-size:0.85rem">Files will appear in the preview area below after upload.</p>
+  </div>
+  <div class="tab-content" id="tab-paste">
+    <textarea id="svgCode" placeholder="Paste your SVG code here...&#10;&#10;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 100 100&quot;&gt;&#10;  &lt;circle cx=&quot;50&quot; cy=&quot;50&quot; r=&quot;40&quot; fill=&quot;#6c5ce7&quot;/&gt;&#10;&lt;/svg&gt;"></textarea>
+    <div style="margin-top:12px">
+      <button class="btn btn-primary" id="addFromCode">Add to Queue</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <label>Scale</label>
+      <select id="scale">
+        <option value="1">1x</option>
+        <option value="2" selected>2x</option>
+        <option value="3">3x</option>
+        <option value="4">4x</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>Background</label>
+      <div class="bg-options">
+        <div class="bg-btn transparent active" data-bg="transparent" title="Transparent"></div>
+        <div class="bg-btn white" data-bg="#ffffff" title="White"></div>
+        <input type="color" id="customBg" value="#0f0f13" title="Custom color">
+      </div>
+    </div>
+    <div class="control-group">
+      <label>Custom Width (px)</label>
+      <input type="text" id="customWidth" placeholder="auto" style="width:90px">
+    </div>
+    <div class="control-group">
+      <label>Custom Height (px)</label>
+      <input type="text" id="customHeight" placeholder="auto" style="width:90px">
+    </div>
+    <div style="flex:1"></div>
+    <button class="btn btn-primary" id="convertAll" disabled>Convert All</button>
+    <button class="btn btn-success" id="downloadAll" disabled>⬇ Download All</button>
+    <button class="btn btn-danger" id="clearAll" disabled>Clear</button>
+  </div>
+
+  <div class="preview-area" id="previewArea">
+    <div class="empty-state" id="emptyState">
+      <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+      <p>No SVG files added yet</p>
+    </div>
+    <div class="preview-grid" id="previewGrid"></div>
+  </div>
+</div>
+
+<footer>
+  <p>SVG to PNG Converter — Free, private, runs entirely in your browser</p>
+</footer>
+
+<script>
+(()=>{
+const dropZone=document.getElementById('dropZone');
+const fileInput=document.getElementById('fileInput');
+const svgCode=document.getElementById('svgCode');
+const addFromCode=document.getElementById('addFromCode');
+const previewGrid=document.getElementById('previewGrid');
+const emptyState=document.getElementById('emptyState');
+const convertAll=document.getElementById('convertAll');
+const downloadAll=document.getElementById('downloadAll');
+const clearAll=document.getElementById('clearAll');
+const scaleSelect=document.getElementById('scale');
+const customBg=document.getElementById('customBg');
+const customWidth=document.getElementById('customWidth');
+const customHeight=document.getElementById('customHeight');
+
+let items=[];
+let bgColor='transparent';
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+  });
+});
+
+// Background buttons
+document.querySelectorAll('.bg-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.bg-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    bgColor=b.dataset.bg;
+    renderAll();
+  });
+});
+customBg.addEventListener('input',()=>{
+  document.querySelectorAll('.bg-btn').forEach(x=>x.classList.remove('active'));
+  bgColor=customBg.value;
+  renderAll();
+});
+
+// Drop zone
+dropZone.addEventListener('click',()=>fileInput.click());
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop',e=>{
+  e.preventDefault();dropZone.classList.remove('drag-over');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change',()=>{handleFiles(fileInput.files);fileInput.value=''});
+
+// Paste SVG code
+addFromCode.addEventListener('click',()=>{
+  const code=svgCode.value.trim();
+  if(!code){toast('Please paste SVG code first','error');return}
+  if(!code.includes('<svg')){toast('Invalid SVG code','error');return}
+  addItem('pasted-svg.svg',code);
+  svgCode.value='';
+  toast('SVG added to queue','success');
+});
+
+function handleFiles(files){
+  [...files].forEach(f=>{
+    if(!f.type.includes('svg')&&!f.name.endsWith('.svg'))return;
+    const reader=new FileReader();
+    reader.onload=e=>addItem(f.name,e.target.result);
+    reader.readAsText(f);
+  });
+}
+
+function addItem(name,svgText){
+  const id=Date.now()+'_'+Math.random().toString(36).slice(2,7);
+  const item={id,name,svgText,pngDataUrl:null};
+  items.push(item);
+  updateUI();
+  renderItem(item);
+}
+
+function updateUI(){
+  const has=items.length>0;
+  emptyState.style.display=has?'none':'block';
+  convertAll.disabled=!has;
+  clearAll.disabled=!has;
+  downloadAll.disabled=!items.some(i=>i.pngDataUrl);
+}
+
+function getSvgDimensions(svgText){
+  const parser=new DOMParser();
+  const doc=parser.parseFromString(svgText,'image/svg+xml');
+  const svg=doc.querySelector('svg');
+  if(!svg)return{w:300,h:150};
+  let w=parseFloat(svg.getAttribute('width'))||0;
+  let h=parseFloat(svg.getAttribute('height'))||0;
+  if((!w||!h)&&svg.getAttribute('viewBox')){
+    const vb=svg.getAttribute('viewBox').split(/[\s,]+/).map(Number);
+    if(vb.length===4){w=w||vb[2];h=h||vb[3]}
+  }
+  return{w:w||300,h:h||150};
+}
+
+function renderItem(item){
+  const dim=getSvgDimensions(item.svgText);
+  const scale=parseInt(scaleSelect.value);
+  const cw=parseInt(customWidth.value)||dim.w;
+  const ch=parseInt(customHeight.value)||dim.h;
+  const fw=cw*scale;
+  const fh=ch*scale;
+
+  const card=document.createElement('div');
+  card.className='preview-card';
+  card.id='card-'+item.id;
+
+  const canvas=document.createElement('canvas');
+  canvas.width=fw;canvas.height=fh;
+  const ctx=canvas.getContext('2d');
+
+  if(bgColor!=='transparent'){
+    ctx.fillStyle=bgColor;
+    ctx.fillRect(0,0,fw,fh);
+  }
+
+  const blob=new Blob([item.svgText],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const img=new Image();
+  img.onload=()=>{
+    ctx.drawImage(img,0,0,fw,fh);
+    URL.revokeObjectURL(url);
+    item.pngDataUrl=canvas.toDataURL('image/png');
+    updateUI();
+  };
+  img.onerror=()=>{
+    ctx.fillStyle='#ff6b6b';ctx.font='14px sans-serif';
+    ctx.fillText('Render error',10,fh/2);
+    URL.revokeObjectURL(url);
+  };
+  img.src=url;
+
+  const wrap=document.createElement('div');
+  wrap.className='preview-canvas-wrap';
+  wrap.appendChild(canvas);
+
+  const info=document.createElement('div');
+  info.className='preview-info';
+  info.innerHTML=`
+    <span class="name" title="${item.name}">${item.name}</span>
+    <span class="size">${fw}×${fh}</span>
+  `;
+
+  const actions=document.createElement('div');
+  actions.className='preview-actions';
+  actions.style.padding='8px 16px 12px';
+
+  const dlBtn=document.createElement('button');
+  dlBtn.textContent='⬇ PNG';
+  dlBtn.onclick=()=>downloadItem(item);
+
+  const rmBtn=document.createElement('button');
+  rmBtn.textContent='✕';
+  rmBtn.onclick=()=>{items=items.filter(i=>i.id!==item.id);card.remove();updateUI()};
+
+  actions.appendChild(dlBtn);
+  actions.appendChild(rmBtn);
+  card.appendChild(wrap);
+  card.appendChild(info);
+  card.appendChild(actions);
+  previewGrid.appendChild(card);
+}
+
+function renderAll(){
+  previewGrid.innerHTML='';
+  items.forEach(item=>{item.pngDataUrl=null;renderItem(item)});
+  updateUI();
+}
+
+scaleSelect.addEventListener('change',renderAll);
+customWidth.addEventListener('change',renderAll);
+customHeight.addEventListener('change',renderAll);
+
+convertAll.addEventListener('click',()=>{
+  renderAll();
+  toast(`Converting ${items.length} file(s)...`,'success');
+});
+
+function downloadItem(item){
+  if(!item.pngDataUrl){toast('Convert first','error');return}
+  const a=document.createElement('a');
+  a.href=item.pngDataUrl;
+  a.download=item.name.replace(/\.svg$/i,'')+'.png';
+  a.click();
+}
+
+downloadAll.addEventListener('click',()=>{
+  items.forEach(item=>downloadItem(item));
+});
+
+clearAll.addEventListener('click',()=>{
+  items=[];previewGrid.innerHTML='';updateUI();
+});
+
+function toast(msg,type='success'){
+  const el=document.createElement('div');
+  el.className='toast '+type;
+  el.textContent=msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3000);
+}
+
+// Paste SVG from clipboard anywhere
+document.addEventListener('paste',e=>{
+  const text=(e.clipboardData||window.clipboardData).getData('text');
+  if(text&&text.includes('<svg')){
+    e.preventDefault();
+    addItem('clipboard-svg.svg',text);
+    toast('SVG pasted from clipboard','success');
+  }
+});
+})();
+</script>
+<script src="https://alwingulla.com/88/tag.min.js" data-zone="130747" async data-cfasync="false"></script>
+</body>
+</html>
